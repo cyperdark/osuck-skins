@@ -30,18 +30,22 @@ body:
     attributes:
       label: expected behavior
       description: What was supposed to happen?
+    validations:
+      required: true
   - type: textarea
     id: bug-actual-behavior
     attributes:
       label: actual behavior
       description: What actually happened?
+    validations:
+      required: true
   - type: textarea
     id: bug-steps
     attributes:
       label: steps to reproduce (if applicable)
       description: Explain in simple steps how you made the bug to occur.
     validations:
-      required: true
+      required: false
   - type: textarea
     id: bug-img
     attributes:
