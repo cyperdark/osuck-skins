@@ -26,7 +26,7 @@ body:
     attributes:
       label: feature description
       description: Describe your idea using simple words.
-      placeholder: My idea is [...].
+      placeholder: My idea is [..].
     validations:
       required: true
   - type: textarea
@@ -34,7 +34,7 @@ body:
     attributes:
       label: use case
       description: In what case or scenario would your idea be useful for the average user.
-      placeholder: My idea can help users [...].
+      placeholder: My idea can help users [..].
     validations:
       required: true
   - type: textarea
