@@ -1,0 +1,50 @@
+name: bug report
+description: Use this form to report any issues or bugs found on https://skins.osuck.net. Your feedback helps us improve.
+title: "bug(): "
+labels: ["status: open", "type: bug", "priority: low"]
+assignees:
+  - cyperdark
+body:
+  - type: dropdown
+    id: bug-browser
+    attributes:
+      label: browser
+      description: What browser are you using?
+      options:
+        - Chrome
+        - Edge
+        - Brave
+        - Safari
+        - Firefox
+        - Opera
+        - Other    
+  - type: textarea
+    id: bug-desc
+    attributes:
+      label: bug description
+      description: Describe the issue or suggestion in detail.
+    validations:
+      required: true
+  - type: textarea
+    id: bug-expected-behavior
+    attributes:
+      label: expected behavior
+      description: What was supposed to happen?
+  - type: textarea
+    id: bug-actual-behavior
+    attributes:
+      label: actual behavior
+      description: What actually happened?
+  - type: textarea
+    id: bug-steps
+    attributes:
+      label: steps to reproduce (if applicable)
+      description: Explain in simple steps how you made the bug to occur.
+    validations:
+      required: true
+  - type: textarea
+    id: bug-img
+    attributes:
+      label: bug gallery
+      description: To better understand the problem, please attach a few pictures or a video highlighting the problem.
+      placeholder: drag & drop the files into this textbox.
