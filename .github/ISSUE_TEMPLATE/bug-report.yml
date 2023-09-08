@@ -27,38 +27,7 @@ body:
     id: bug-desc
     attributes:
       label: bug description
-      description: Describe the issue or suggestion in detail.
+      description: Describe the issue or suggestion in detail. If possible, please attach an image showcasing your idea, it could be a sketch, a real example or a document.
       placeholder: I found a bug on [..] which affects [..].
     validations:
       required: true
-  - type: textarea
-    id: bug-expected-behavior
-    attributes:
-      label: expected behavior
-      description: What was supposed to happen?
-      placeholder: It was supposed to [..].
-    validations:
-      required: true
-  - type: textarea
-    id: bug-actual-behavior
-    attributes:
-      label: actual behavior
-      description: What actually happened?
-      placeholder: "[..]"
-    validations:
-      required: true
-  - type: textarea
-    id: bug-steps
-    attributes:
-      label: steps to reproduce (if applicable)
-      description: Explain in simple steps how you made the bug to occur.
-      placeholder: 1. open [..]. 2. click on [..]. 3. see [..].
-  - type: textarea
-    id: bug-attach
-    attributes:
-      label: attachments
-      description: >-
-        To better understand the problem, please attach a few pictures or a
-        video highlighting the problem.
-      placeholder: Please drag & drop the files here.
-      
