@@ -10,47 +10,11 @@ labels:
 assignees:
   - cyperdark
 body:
-  - type: dropdown
-    id: feat-type
-    attributes:
-      label: type
-      description: In which part of the website is your idea applicable?
-      options:
-        - skins
-        - editor
-        - other
-    validations:
-      required: true
   - type: textarea
     id: feat-desc
     attributes:
       label: feature description
-      description: Describe your idea using simple words.
+      description: Describe your idea using simple words. If possible, please attach an image showcasing your idea, it could be a sketch, a real example or a document.
       placeholder: My idea is [..].
     validations:
       required: true
-  - type: textarea
-    id: feat-use
-    attributes:
-      label: use case
-      description: In what case or scenario would your idea be useful for the average user.
-      placeholder: My idea can help users [..].
-    validations:
-      required: true
-  - type: textarea
-    id: feat-examples
-    attributes:
-      label: attachments
-      description: >-
-        Help us understand better by providing samples: documents, sketches or
-        images.
-      placeholder: Please drag & drop the files here.
-  - type: checkboxes
-    id: feat_check
-    attributes:
-      label: requirements
-      options:
-        - label: >-
-            I agree that I have checked if my idea has been previously posted
-            but I found nothing similar.
-          required: true
