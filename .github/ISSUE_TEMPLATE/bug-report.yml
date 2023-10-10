@@ -5,7 +5,7 @@ description: >-
 title: "bug(): "
 labels:
   - "type: bug"
-  - "priority: 0"
+  - "priority: 3"
 assignees:
   - cyperdark
 body:
