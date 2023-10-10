@@ -4,9 +4,8 @@ description: >-
   Your feedback helps us improve.
 title: "bug(): "
 labels:
-  - "status: open"
   - "type: bug"
-  - "priority: low"
+  - "priority: 0"
 assignees:
   - cyperdark
 body:
