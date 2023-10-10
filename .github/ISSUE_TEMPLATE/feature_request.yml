@@ -5,7 +5,7 @@ description: >-
 title: "feat(): "
 labels:
   - "type: feature"
-  - "priority: 0"
+  - "priority: 3"
 assignees:
   - cyperdark
 body:
