@@ -4,9 +4,8 @@ description: >-
   helps us improve.
 title: "feat(): "
 labels:
-  - "status: open"
   - "type: feature"
-  - "priority: low"
+  - "priority: 0"
 assignees:
   - cyperdark
 body:
