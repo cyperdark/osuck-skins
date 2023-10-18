@@ -5,6 +5,43 @@ const regex = {
 	comparison: /(views|downloads|rating)([=<>]+)(\d+)$/,
 };
 
+// declare function for sorting skins;
+const sortSkins = async (array, sort, direction) => {
+	// sort array based on the given sort option;
+	return array.sort((a, b) => {
+		switch (sort) {
+			case 0:
+				// sort by skin download count;
+				return direction ? a.stats[1] - b.stats[1] : b.stats[1] - a.stats[1];
+			case 1:
+				// sort by skin view count;
+				return direction ? a.stats[0] - b.stats[0] : b.stats[0] - a.stats[0];
+			case 2:
+				// sort by skin rating;
+				return direction ? a.stats[4] - b.stats[4] : b.stats[4] - a.stats[4];
+			case 3:
+				// sort by skin size;
+				return direction ? a.size[0] - b.size[0] : b.size[0] - a.size[0];
+			case 4:
+				// sort by skin upload date;
+				return direction
+					? new Date(a.updated_at) - new Date(b.updated_at)
+					: new Date(b.updated_at) - new Date(a.updated_at);
+			case 5:
+				// sort by skin name;
+				return direction
+					? `${b.name} v${b.version.text}` > `${a.name} v${a.version.text}`
+						? 1
+						: -1
+					: `${a.name} v${a.version.text}` > `${b.name} v${b.version.text}`
+					? 1
+					: -1;
+			default:
+				return a - b;
+		}
+	});
+};
+
 // declare function for filtering skins & handling keywords;
 const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 	// force type Object on given array;
@@ -173,6 +210,6 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 		}
 	}
 
-	// return the filtered array;
-	return result;
+	// sort the filtered array and then return it;
+	return await sortSkins(result, sort, order);
 };
