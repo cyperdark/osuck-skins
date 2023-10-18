@@ -106,12 +106,20 @@ const sortSkins = async (array, query, gamemode) => {
 				);
 
 				// if the term is not a keyword, search for the term in the title or in the keywords/"tags" array;
-			} else 
-				result = result.filter(
-					(skin) =>
-						skin.name.toLowerCase().includes(term) ||
-						skin.keywords.some((keyword) => keyword.toLowerCase().includes(term)),
+			} else {
+				let exclude = false;
+
+				// check if the term is being excluded;
+				if (term.startsWith("-")) exclude = true;
+
+				// filter given array based on the skin name or skin tags & and save it in "result";
+				result = result.filter((skin) =>
+					exclude
+						? !skin.keywords.some((keyword) => keyword.toLowerCase().includes(term))
+						: skin.name.toLowerCase().includes(term) ||
+						  skin.keywords.some((keyword) => keyword.toLowerCase().includes(term)),
 				);
+			}
 		}
 	}
 
