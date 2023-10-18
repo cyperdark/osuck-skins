@@ -94,7 +94,12 @@ const sortSkins = async (array, query, gamemode) => {
 						? !compare[comparison](skin.stats[order.indexOf(key)], value)
 						: compare[comparison](skin.stats[order.indexOf(key)], value),
 				);
-			}
+			} else
+			result = result.filter(
+				(skin) =>
+					skin.name.toLowerCase().includes(term) ||
+					skin.keywords.some((keyword) => keyword.toLowerCase().includes(term)),
+			);
 		}
 	}
 
