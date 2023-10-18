@@ -7,13 +7,11 @@ const regex = {
 
 // declare fuction for handling keywords
 const sortSkins = async (array, query, gamemode) => {
-	let result = array;
-
 	// force array to be JSON
-	if (typeof array === "string") array = JSON.parse(array);
+	let result = typeof array === "string" ? JSON.parse(array) : array;
 
 	// filter array by gamemode
-	result = array.filter((skin) => skin.modes.includes(parseInt(gamemode)));
+	result = result.filter((skin) => skin.modes.includes(parseInt(gamemode)));
 
 	if (query) {
 		// split query by space character
@@ -31,59 +29,43 @@ const sortSkins = async (array, query, gamemode) => {
 				if (term.startsWith("-")) {
 					key = key.slice(1);
 
-					if (["creator", "publisher", "color"].includes(key))
-						exclude = true;
+					if (["creator", "publisher", "color"].includes(key)) exclude = true;
 					else value = !value;
 				}
 
 				//handle value type if keyword is "creator", "publisher";
 				if (["creator", "publisher"].includes(key)) {
 					!isNaN(value) ? (value = Number(value)) : null;
-					typeof value === "string"
-						? (value = value.toLowerCase())
-						: null;
+					typeof value === "string" ? (value = value.toLowerCase()) : null;
 				}
 
-				// handle "creator" keyword
-				if (key === "creator")
-					result = array.filter((skin) =>
-						skin.creators[
-							typeof value === "number" ? "0" : "1"
-						].some((creator) =>
-							exclude
-								? !creator.toLowerCase().includes(value)
-								: creator.toLowerCase().includes(value),
-						),
-					);
-				// handle "publisher" keyword (WIP)
-				else if (key === "publisher") continue;
-				// handle "nsfw" keyword
-				else if (key === "nsfw")
-					result = value
-						? array.filter((skin) => skin._nsfw)
-						: array.filter((skin) => !skin._nsfw);
-				// handle "sd" keyword
-				else if (key === "sd")
-					result = value
-						? array.filter((skin) => skin.files.includes(0))
-						: array.filter((skin) => !skin.files.includes(0));
-				// handle "hd" keyword
-				else if (key === "hd")
-					result = value
-						? array.filter((skin) => skin.files.includes(1))
-						: array.filter((skin) => !skin.files.includes(1));
-				// handle "animated" keyword
-				else if (key === "animated")
-					result = value
-						? array.filter((skin) => skin.files.includes(2))
-						: array.filter((skin) => !skin.files.includes(2));
-				// handle "extra" keyword
-				else if (key === "extra")
-					result = value
-						? array.filter((skin) => skin.files.includes(3))
-						: array.filter((skin) => !skin.files.includes(3));
-				// handle "color" keyword (WIP)
-				else if (key === "color") continue;
+				// declare order of "files" array
+				const order = ["sd", "hd", "animated", "extra"];
+
+				result = (() => {
+					switch (key) {
+						case "creator":
+							return result.filter((skin) =>
+								skin.creators[typeof value === "number" ? "0" : "1"].some(
+									(creator) =>
+										exclude
+											? !creator.toLowerCase().includes(value)
+											: creator.toLowerCase().includes(value),
+								),
+							);
+						case "nsfw":
+							return value
+								? result.filter((skin) => skin._nsfw)
+								: result.filter((skin) => !skin._nsfw);
+						case "sd":
+						case "hd":
+						case "animated":
+						case "extra":
+							return value
+								? result.filter((skin) => skin.files.includes(order.indexOf(key)))
+								: result.filter((skin) => !skin.files.includes(order.indexOf(key)));
+					}
+				})();
 			} else if (term.match(regex.comparison)) {
 				// split term into key, comparison & value
 				let [_, key, comparison, value] = term.match(regex.comparison),
@@ -93,13 +75,7 @@ const sortSkins = async (array, query, gamemode) => {
 				value = Number(value);
 
 				// declare order of "stats" array
-				const order = [
-					"views",
-					"downloads",
-					"likes",
-					"dislikes",
-					"rating",
-				];
+				const order = ["views", "downloads", "likes", "dislikes", "rating"];
 
 				// declare comparation functions
 				const compare = {
@@ -113,16 +89,10 @@ const sortSkins = async (array, query, gamemode) => {
 				// handle exclusion
 				if (term.startsWith("-")) exclude = true;
 
-				result = array.filter((skin) =>
+				result = result.filter((skin) =>
 					exclude
-						? !compare[comparison](
-								skin.stats[order.indexOf(key)],
-								value,
-						  )
-						: compare[comparison](
-								skin.stats[order.indexOf(key)],
-								value,
-						  ),
+						? !compare[comparison](skin.stats[order.indexOf(key)], value)
+						: compare[comparison](skin.stats[order.indexOf(key)], value),
 				);
 			}
 		}
