@@ -5,13 +5,59 @@ const regex = {
 	comparison: /(views|downloads|rating)([=<>]+)(\d+)$/,
 };
 
-// declare function for handling keywords;
-const sortSkins = async (array, query, gamemode) => {
+// declare function for filtering skins & handling keywords;
+const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 	// force type Object on given array;
 	let result = typeof array === "string" ? JSON.parse(array) : array;
 
 	// filter array by gamemode (0 - standard  1 - catch | 2 - mania | 3 - taiko);
-	result = result.filter((skin) => skin.modes.includes(parseInt(gamemode)));
+	result = result.filter((skin) => skin.modes.includes(Number(gamemode)));
+
+	// filter given array by size;
+	if (size.is_active)
+		result = result.filter((skin) => {
+			switch (size.type) {
+				case 0:
+					// if skin size is within min and max limits;
+					return skin.size[0] >= size.min && skin.size[1] <= size.max;
+				case 1:
+					// if first skin size is at least min;
+					return skin.size[0] >= size.min;
+				case 2:
+					// if second skin size is at most max.
+					return skin.size[1] <= size.max;
+			}
+		});
+
+	// filter given array by date;
+	if (date.is_active) {
+		// define min and max from user settings;
+		const min = new Date(date.min).getTime();
+		const max = new Date(date.max).getTime();
+
+		result = result.filter((skin) => {
+			// define time as the skin's upload date;
+			const time = new Date(skin.created_at).getTime();
+
+			switch (date.type) {
+				case 0:
+					// if both min & max values were changed;
+					return time > min && time < max;
+				case 1:
+					// if just min value was changed;
+					return time > min;
+				case 2:
+					// if just max value was changed;
+					return time < max;
+				default:
+					return false;
+			}
+		});
+	}
+
+	// filter given array by date;
+	if (ratio.is_active)
+		result = result.filter((skin) => skin.ratios.includes(Number(ratio.selected)));
 
 	if (query) {
 		// split given query by space (" ") character;
@@ -44,35 +90,37 @@ const sortSkins = async (array, query, gamemode) => {
 					typeof value === "string" ? (value = value.toLowerCase()) : null;
 				}
 
-				// declare the order for the "files" array;
-				const order = ["sd", "hd", "animated", "extra"];
-
 				// filter given array based on the key & and save it in "result";
-				result = (() => {
+				result = result.filter((skin) => {
 					switch (key) {
-						case "id": // if key is "id";
-							return result.filter((skin) => skin.id == value);
-						case "creator": // if key is "creator";
-							return result.filter((skin) =>
-								skin.creators[typeof value === "number" ? 0 : 1].some((creator) =>
+						case "id":
+							// if key is "id";
+							return skin.id == value;
+						case "creator":
+							// if key is "creator";
+							return skin.creators[typeof value === "number" ? 0 : 1].some(
+								(creator) =>
 									exclude
 										? !creator.toLowerCase().includes(value)
 										: creator.toLowerCase().includes(value),
-								),
 							);
-						case "nsfw": // if key is "nsfw";
+						case "nsfw":
+							// if key is "nsfw";
+							return value ? skin._nsfw : !skin._nsfw;
+						case "sd":
+						// if key is "sd";
+						case "hd":
+						// or "hd";
+						case "animated":
+						// or "animated";
+						case "extra":
+							// or "extra";
+							const order = ["sd", "hd", "animated", "extra"];
 							return value
-								? result.filter((skin) => skin._nsfw)
-								: result.filter((skin) => !skin._nsfw);
-						case "sd": // if key is "sd";
-						case "hd": // or "hd";
-						case "animated": // or "animated";
-						case "extra": // or "extra";
-							return value
-								? result.filter((skin) => skin.files.includes(order.indexOf(key)))
-								: result.filter((skin) => !skin.files.includes(order.indexOf(key)));
+								? skin.files.includes(order.indexOf(key))
+								: !skin.files.includes(order.indexOf(key));
 					}
-				})();
+				});
 
 				// check if term is a "comparison" keyword;
 			} else if (term.match(regex.comparison)) {
@@ -98,6 +146,7 @@ const sortSkins = async (array, query, gamemode) => {
 				// check if the term is being excluded;
 				if (term.startsWith("-")) exclude = true;
 
+				let queryy = "views>40";
 				// filter given array based on the comparison & and save it in "result";
 				result = result.filter((skin) =>
 					exclude
@@ -111,6 +160,7 @@ const sortSkins = async (array, query, gamemode) => {
 
 				// check if the term is being excluded;
 				if (term.startsWith("-")) exclude = true;
+				console.log(exclude);
 
 				// filter given array based on the skin name or skin tags & and save it in "result";
 				result = result.filter((skin) =>
