@@ -1,3 +1,4 @@
+
 // declare regexes for keyword detection;
 const regex = {
 	property:
@@ -6,7 +7,7 @@ const regex = {
 };
 
 // declare function for sorting skins;
-const sortSkins = async (array, sort, direction) => {
+const sortSkins = (array, sort, direction) => {
 	// sort array based on the given sort option;
 	return array.sort((a, b) => {
 		switch (sort) {
@@ -34,18 +35,25 @@ const sortSkins = async (array, sort, direction) => {
 						? 1
 						: -1
 					: `${a.name} v${a.version.text}` > `${b.name} v${b.version.text}`
-					? 1
-					: -1;
+						? 1
+						: -1;
 			default:
 				return a - b;
-		}
+		};
 	});
 };
 
+
 // declare function for filtering skins & handling keywords;
-const filterSkins = async (array, query, gamemode, size, date, ratio) => {
+// export const sortSkins = () => useWebWorkerFn((array, query, gamemode, sort, order, size, date, ratio) => {
+export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, order, size, date, ratio) => {
 	// force type Object on given array;
 	let result = typeof array === "string" ? JSON.parse(array) : array;
+
+	const files_order = ["sd", "hd", "animated", "extra"];
+	const stats_order = ["views", "downloads", "likes", "dislikes", "rating"];
+	let exclude = false;
+
 
 	// filter array by gamemode (0 - standard  1 - catch | 2 - mania | 3 - taiko);
 	result = result.filter((skin) => skin.modes.includes(Number(gamemode)));
@@ -63,7 +71,7 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 				case 2:
 					// if second skin size is at most max.
 					return skin.size[1] <= size.max;
-			}
+			};
 		});
 
 	// filter given array by date;
@@ -88,9 +96,9 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 					return time < max;
 				default:
 					return false;
-			}
+			};
 		});
-	}
+	};
 
 	// filter given array by date;
 	if (ratio.is_active)
@@ -105,8 +113,7 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 			// check if terms is a "property" keyword;
 			if (term.match(regex.property)) {
 				// split the term into 2 values: key & value & define exclude;
-				let [key, value] = term.split(":"),
-					exclude = false;
+				let [key, value] = term.split(":");
 
 				// check if the term is being excluded;
 				if (term.startsWith("-")) {
@@ -116,60 +123,51 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 					// check if the key is any of the identifiers below. If so, set exclude to true, otherwise invert boolean value;
 					if (["creator", "publisher", "color"].includes(key)) exclude = true;
 					else value = !value;
-				}
+				};
 
 				// check if the key is any of the identifiers below;
 				// if true, run additional instructions for string manipulation;
 				if (["creator", "publisher"].includes(key)) {
 					// check if the value is a number. If so, change value type to Number;
-					!isNaN(value) ? (value = Number(value)) : null;
+					if (!isNaN(value)) value = Number(value);
 					// check if value is a string. If so, lowercase it;
-					typeof value === "string" ? (value = value.toLowerCase()) : null;
-				}
+					if (typeof value === "string") value = value.toLowerCase();
+				};
 
 				// filter given array based on the key & and save it in "result";
 				result = result.filter((skin) => {
 					switch (key) {
 						case "id":
-							// if key is "id";
 							return skin.id == value;
+
 						case "creator":
-							// if key is "creator";
 							return skin.creators[typeof value === "number" ? 0 : 1].some(
-								(creator) =>
-									exclude
-										? !creator.toLowerCase().includes(value)
-										: creator.toLowerCase().includes(value),
+								(creator) => exclude == true
+									? !creator.toLowerCase().includes(value)
+									: creator.toLowerCase().includes(value),
 							);
+
 						case "nsfw":
-							// if key is "nsfw";
 							return value ? skin._nsfw : !skin._nsfw;
+
+						// if key is "sd" or "hd" or "animated" or "extra"
 						case "sd":
-						// if key is "sd";
 						case "hd":
-						// or "hd";
 						case "animated":
-						// or "animated";
 						case "extra":
-							// or "extra";
-							const order = ["sd", "hd", "animated", "extra"];
 							return value
-								? skin.files.includes(order.indexOf(key))
-								: !skin.files.includes(order.indexOf(key));
-					}
+								? skin.files.includes(files_order.indexOf(key))
+								: !skin.files.includes(files_order.indexOf(key));
+					};
 				});
 
 				// check if term is a "comparison" keyword;
 			} else if (term.match(regex.comparison)) {
 				// split the term into 3 values: key, comparison & value & define exclude;
-				let [_, key, comparison, value] = term.match(regex.comparison),
-					exclude = false;
+				let [_, key, comparison, value] = term.match(regex.comparison);
 
 				// force type Number on value;
 				value = Number(value);
-
-				// declare the order for the "stats" array;
-				const order = ["views", "downloads", "likes", "dislikes", "rating"];
 
 				// declare functions for specific comparisons;
 				const compare = {
@@ -183,12 +181,11 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 				// check if the term is being excluded;
 				if (term.startsWith("-")) exclude = true;
 
-				let queryy = "views>40";
 				// filter given array based on the comparison & and save it in "result";
 				result = result.filter((skin) =>
 					exclude
-						? !compare[comparison](skin.stats[order.indexOf(key)], value)
-						: compare[comparison](skin.stats[order.indexOf(key)], value),
+						? !compare[comparison](skin.stats[stats_order.indexOf(key)], value)
+						: compare[comparison](skin.stats[stats_order.indexOf(key)], value),
 				);
 
 				// if the term is not a keyword, search for the term in the title or in the keywords/"tags" array;
@@ -197,19 +194,18 @@ const filterSkins = async (array, query, gamemode, size, date, ratio) => {
 
 				// check if the term is being excluded;
 				if (term.startsWith("-")) exclude = true;
-				console.log(exclude);
 
 				// filter given array based on the skin name or skin tags & and save it in "result";
 				result = result.filter((skin) =>
 					exclude
 						? !skin.keywords.some((keyword) => keyword.toLowerCase().includes(term))
 						: skin.name.toLowerCase().includes(term) ||
-						  skin.keywords.some((keyword) => keyword.toLowerCase().includes(term)),
+						skin.keywords.some((keyword) => keyword.toLowerCase().includes(term)),
 				);
-			}
-		}
-	}
+			};
+		};
+	};
 
 	// sort the filtered array and then return it;
-	return await sortSkins(result, sort, order);
-};
+	return sortSkins(result, sort, order);
+});
