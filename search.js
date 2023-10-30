@@ -8,7 +8,6 @@ const regex = {
 
 // declare function for sorting skins;
 const sortSkins = (array, sort, direction) => {
-	// sort array based on the given sort option;
 	return array.sort((a, b) => {
 		switch (sort) {
 			case 0:
@@ -51,12 +50,11 @@ export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, o
 	let result = typeof array === "string" ? JSON.parse(array) : array;
 
 	const files_order = ["sd", "hd", "animated", "extra"];
-	const stats_order = ["views", "downloads", "likes", "dislikes", "rating"];
 	let exclude = false;
 
 
 	// filter array by gamemode (0 - standard  1 - catch | 2 - mania | 3 - taiko);
-	result = result.filter((skin) => skin.modes.includes(Number(gamemode)));
+	result = result.filter((skin) => gamemodes.every(mode => skin.modes.includes(mode)));
 
 	// filter given array by size;
 	if (size.is_active)
@@ -71,8 +69,60 @@ export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, o
 				case 2:
 					// if second skin size is at most max.
 					return skin.size[1] <= size.max;
+				case 3:
+					// if second skin size is at most max.
+					return skin.size[1] == size.min;
 			};
 		});
+
+	// filter given array by views;
+	if (views.is_active)
+		result = result.filter((skin) => {
+			switch (views.type) {
+				case 0:
+					// if skin views is within min and max limits;
+					return skin.stats[0] >= views.min && skin.stats[0] <= views.max;
+				case 1:
+					// if first skin views is at least min;
+					return skin.stats[0] >= views.min;
+				case 2:
+					// if second skin views is at most max.
+					return skin.stats[0] <= views.max;
+			};
+		});
+
+	// filter given array by downloads;
+	if (downloads.is_active)
+		result = result.filter((skin) => {
+			switch (downloads.type) {
+				case 0:
+					// if skin downloads is within min and max limits;
+					return skin.stats[1] >= downloads.min && skin.stats[1] <= downloads.max;
+				case 1:
+					// if first skin downloads is at least min;
+					return skin.stats[1] >= downloads.min;
+				case 2:
+					// if second skin downloads is at most max.
+					return skin.stats[1] <= downloads.max;
+			};
+		});
+
+	// filter given array by rating;
+	if (ratings.is_active)
+		result = result.filter((skin) => {
+			switch (ratings.type) {
+				case 0:
+					// if skin ratings is within min and max limits;
+					return skin.stats[4] >= ratings.min && skin.stats[4] <= ratings.max;
+				case 1:
+					// if first skin ratings is at least min;
+					return skin.stats[4] >= ratings.min;
+				case 2:
+					// if second skin ratings is at most max.
+					return skin.stats[4] <= ratings.max;
+			};
+		});
+
 
 	// filter given array by date;
 	if (date.is_active) {
@@ -100,7 +150,7 @@ export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, o
 		});
 	};
 
-	// filter given array by date;
+	// filter given array by ratio;
 	if (ratio.is_active)
 		result = result.filter((skin) => skin.ratios.includes(Number(ratio.selected)));
 
@@ -147,6 +197,12 @@ export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, o
 									: creator.toLowerCase().includes(value),
 							);
 
+						case "publisher":
+							return exclude == true
+								? !skin.publisher.toLowerCase().includes(value)
+								: skin.publisher.toLowerCase().includes(value);
+
+
 						case "nsfw":
 							return value ? skin._nsfw : !skin._nsfw;
 
@@ -160,34 +216,6 @@ export const filterSkins = () => useWebWorkerFn((array, query, gamemode, sort, o
 								: !skin.files.includes(files_order.indexOf(key));
 					};
 				});
-
-				// check if term is a "comparison" keyword;
-			} else if (term.match(regex.comparison)) {
-				// split the term into 3 values: key, comparison & value & define exclude;
-				let [_, key, comparison, value] = term.match(regex.comparison);
-
-				// force type Number on value;
-				value = Number(value);
-
-				// declare functions for specific comparisons;
-				const compare = {
-					">": (a, b) => a > b,
-					">=": (a, b) => a >= b,
-					"=": (a, b) => a === b,
-					"<=": (a, b) => a <= b,
-					"<": (a, b) => a < b,
-				};
-
-				// check if the term is being excluded;
-				if (term.startsWith("-")) exclude = true;
-
-				// filter given array based on the comparison & and save it in "result";
-				result = result.filter((skin) =>
-					exclude
-						? !compare[comparison](skin.stats[stats_order.indexOf(key)], value)
-						: compare[comparison](skin.stats[stats_order.indexOf(key)], value),
-				);
-
 				// if the term is not a keyword, search for the term in the title or in the keywords/"tags" array;
 			} else {
 				let exclude = false;
