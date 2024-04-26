@@ -1,5 +1,5 @@
 <div align="center">
-    <img height="350px" src="https://i.imgur.com/uTvjDJF.png"></img>
+    <img height="280px" src="https://i.imgur.com/uTvjDJF.png"></img>
     <h1>SKINS OSUCK</h1>
     <span><p>GitHub repo for tracking issues and tracking requests.</p><a href="https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=type%3A+bug%2Cpriority%3A+3&projects=&template=bug-report.yml&title=bug%28%29%3A+">report issue</a> • <a href="https://skins.osuck.net/">visit site</a> • <a href="https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=type%3A+feature%2Cpriority%3A+3&projects=&template=feature_request.yml&title=feat%28%29%3A+">suggest feature</a></span>
     <br><br>
