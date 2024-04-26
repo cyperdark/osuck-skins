@@ -1,11 +1,13 @@
-# skins.osuck.net - Issue Tracker
+<div align="center">
+    <img height="350px" src="https://i.imgur.com/uTvjDJF.png"></img>
+    <h1>SKINS OSUCK</h1>
+    <span><p>GitHub repo for tracking issues and tracking requests.</p><a href="https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=type%3A+bug%2Cpriority%3A+3&projects=&template=bug-report.yml&title=bug%28%29%3A+">report issue</a> • <a href="https://skins.osuck.net/">visit site</a> • <a href="https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=type%3A+feature%2Cpriority%3A+3&projects=&template=feature_request.yml&title=feat%28%29%3A+">suggest feature</a></span>
+    <br><br>
+  <div>
+        <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-raw/cyperdark/osuck-skins?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNGJlNmUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaXJjbGUtZG90Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEiLz48L3N2Zz4%3D&label=issues&labelColor=hsl(229%2C%2015%25%2C%2014%25)&color=hsl(237%2C%2014%25%2C%2026%25)&link=https%3A%2F%2Fgithub.com%2Fcyperdark%2Fosuck-skins%2Fissues">
+        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/cyperdark/osuck-skins?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNGJlNmUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1zdGFyIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUuMDkgOC4yNiAyMiA5LjI3IDE3IDE0LjE0IDE4LjE4IDIxLjAyIDEyIDE3Ljc3IDUuODIgMjEuMDIgNyAxNC4xNCAyIDkuMjcgOC45MSA4LjI2IDEyIDIiLz48L3N2Zz4%3D&label=stars&labelColor=hsl(229%2C%2015%25%2C%2014%25)&color=hsl(237%2C%2014%25%2C%2026%25)">
+        <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/cyperdark/osuck-skins?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNGJlNmUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1leWUiPjxwYXRoIGQ9Ik0yIDEyczMtNyAxMC03IDEwIDcgMTAgNy0zIDctMTAgNy0xMC03LTEwLTdaIi8%2BPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMyIvPjwvc3ZnPg%3D%3D&label=watchers&labelColor=hsl(229%2C%2015%25%2C%2014%25)&color=hsl(237%2C%2014%25%2C%2026%25)">
 
-Welcome to the issue tracker for skins.osuck.net! This repository is dedicated to:
 
-1. **Reporting Bugs**: If you encounter any issues or problems while using our website, please feel free to [open a new issue](https://github.com/cyperdark/osuck-skins/issues/new/choose](https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=status%3A+open%2Ctype%3A+bug%2Cpriority%3A+low&projects=&template=bug-report.yml&title=bug%28%29%3A+)) to report them.
-
-2. **Suggesting Ideas**: If you have ideas for improving skins.osuck.net or new features you'd like to see, you can [suggest them here](https://github.com/cyperdark/osuck-skins/issues/new?assignees=cyperdark&labels=status%3A+open%2Ctype%3A+feature%2Cpriority%3A+low&projects=&template=feature_request.yml&title=feat%28%29%3A+).
-
-3. **Transparency**: We aim to provide transparency about the development process and keep you informed about the status of reported issues and proposed ideas.
-
-Thank you for your contributions and for helping us make skins.osuck.net even better! 🎉
+  </div>
+</div>
