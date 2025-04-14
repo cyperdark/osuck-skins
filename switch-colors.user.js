@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         osu-dynamic-beatmaps-color
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  updating beatmap page color to match difficulty icon color hue
 // @author       cyperdark
 // @match        http://osu.ppy.sh/*
@@ -79,7 +79,6 @@
     };
 
 
-
     function callback(mutationsList) {
       for (let mutation of mutationsList) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class' && mutation.target.classList.contains('beatmapset-beatmap-picker__beatmap--active')) {
@@ -99,11 +98,6 @@
     const observer = new MutationObserver(callback);
     observer.observe(document, { attributes: true, attributeFilter: ['class'], subtree: true });
 
-
-    window.addEventListener('popstate', (event) => {
-      console.log('test', window.location.href);
-
-    });
 
     let previous_location = ''
     navigation.addEventListener('navigate', async () => {
