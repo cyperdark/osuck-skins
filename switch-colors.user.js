@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         osu-dynamic-beatmaps-color
 // @namespace    http://tampermonkey.net/
-// @version      0.1.2
+// @version      0.1.3
 // @description  updating beatmap page color to match difficulty icon color hue
 // @author       cyperdark
 // @match        http://osu.ppy.sh/*
@@ -56,7 +56,7 @@
         const element = target?.childNodes?.[0];
         if (!element) return;
 
-        const og_rgb = element.computedStyleMap().get('--diff')[0];
+        const og_rgb = getComputedStyle(element).getPropertyValue("--diff");
         const rgb = og_rgb.replace('rgb(', '').replace(')', '');
         const hue = og_rgb.includes('rgb') ? Math.round(rgbToHsl(rgb)[0] * 360) : 0;
 
